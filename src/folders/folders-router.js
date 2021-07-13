@@ -13,28 +13,25 @@ const serializeFolder = folder => ({
 
 foldersRouter 
     .route('/')
+
     .get((req, res, next) => {
-        console.log(foldersRouter.get('/'));
         FoldersService.getAllFolders(
             req.app.get('db')
         )
-      .then(folders => {
-        res.json(folders.map(serializeFolder));
-      })
-            .catch(next);
+        .then(folders => {
+            res
+                .json(folders.map(serializeFolder))
+        })
+        .catch(next)
     }) 
+
     .post(jsonParser, (req, res, next) => {
-        
-        const {folder_name} = req.body;
-        console.log(folder_name);
-        const newFolder = {folder_name};
-        console.log(newFolder);
 
         for (const [key, value] of Object.entries(newFolder)) {
             if (value == null) {
                 return res.status(400).json({
                     error: {message: `Missing '${key}' in request body.`}
-                });
+                })
             }
         }
 
@@ -55,7 +52,6 @@ foldersRouter
     .route('/:folder_id')
     
     .all((req, res, next) => {
-        console.log('hello world');
         FoldersService.getById (
             req.app.get('db'),
             req.params.folder_id
@@ -67,13 +63,15 @@ foldersRouter
                     });
                 }
                 res.folder = folder;
-                next();
+                next()
             })
-            .catch(next);
+            .catch(next)
     })
+
     .get((req, res, next) => {
-        res.json(serializeFolder(res.folder));
+        res.json(serializeFolder(res.folder))
     })
+
     .delete((req, res, next) => {
         FoldersService.deleteFolder(
             req.app.get('db'),
@@ -82,8 +80,9 @@ foldersRouter
             .then(() => {
                 res.status(204).end();
             })
-            .catch(next);
+            .catch(next)
     })
+
     .patch(jsonParser, (req, res, next) => {
         const {folder_name} = req.body;
         const folderToUpdate = {folder_name};
@@ -93,7 +92,7 @@ foldersRouter
         if (numberOfValues === 0) {
             return res.status(400).json({
                 error: {message: `Request body must contain a 'name.'`}
-            });
+            })
         }
 
         FoldersService.updateFolder(
@@ -101,8 +100,8 @@ foldersRouter
             req.params.folder_id,
             folderToUpdate
         )
-            .then(numRowsAffected => {
-                res.status(204).end();
+            .then(folderToUpdate => {
+                res.status(200).json(folderToUpdate)
             })
             .catch(next);
     });
