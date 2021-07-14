@@ -15,10 +15,13 @@ foldersRouter
     .route('/')
 
     .get((req, res, next) => {
+        console.log("test get endpoint");
         FoldersService.getAllFolders(
             req.app.get('db')
         )
         .then(folders => {
+            console.log("folders:", folders)
+            console.log("folders.map(serializeFolder:", folders.map(serializeFolder))
             res
                 .json(folders.map(serializeFolder))
         })
@@ -26,6 +29,7 @@ foldersRouter
     }) 
 
     .post(jsonParser, (req, res, next) => {
+        const newFolder = { folder_name: req.body.folder_name }
 
         for (const [key, value] of Object.entries(newFolder)) {
             if (value == null) {
@@ -84,8 +88,8 @@ foldersRouter
     })
 
     .patch(jsonParser, (req, res, next) => {
-        const {folder_name} = req.body;
-        const folderToUpdate = {folder_name};
+        const { folder_name } = req.body;
+        const folderToUpdate = { folder_name };
 
         const numberOfValues = Object.values(folderToUpdate).filter(Boolean).length;
 
@@ -96,7 +100,7 @@ foldersRouter
         }
 
         FoldersService.updateFolder(
-            req.app.patch.get('db'),
+            req.app.get('db'),
             req.params.folder_id,
             folderToUpdate
         )

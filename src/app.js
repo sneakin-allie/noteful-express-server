@@ -21,18 +21,8 @@ app.use('/api/folders', foldersRouter);
 app.use('/api/notes', notesRouter);
 
 app.get('/', (req, res) => { 
-    console.log('/');
+    console.log('test get endpoint'); // this works but no response
     res.send('Welcome to the Noteful API!')
-});
-
-app.get('/api/folders', (req, res) => { 
-    console.log('/folders-are-working');
-    res.send('Welcome to the Noteful API folders!')
-});
-
-app.get('/api/notes', (req, res) => { 
-    console.log('/notes-are-working');
-    res.send('Welcome to the Noteful API notes!')
 });
 
 app.use(function errorHandler(error, req, res, next) {
