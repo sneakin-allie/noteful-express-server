@@ -15,13 +15,10 @@ foldersRouter
     .route('/')
 
     .get((req, res, next) => {
-        console.log("test get endpoint");
         FoldersService.getAllFolders(
             req.app.get('db')
         )
         .then(folders => {
-            console.log("folders:", folders)
-            console.log("folders.map(serializeFolder:", folders.map(serializeFolder))
             res
                 .json(folders.map(serializeFolder))
         })
