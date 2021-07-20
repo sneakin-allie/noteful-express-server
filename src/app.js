@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const {NODE_ENV} = require('./config');
+const { v4: uuid } = require('uuid');
+const knex = require('knex')
 const foldersRouter = require('./folders/folders-router');
 const notesRouter = require('./notes/notes-router');
 
@@ -21,7 +23,6 @@ app.use('/api/folders', foldersRouter);
 app.use('/api/notes', notesRouter);
 
 app.get('/', (req, res) => { 
-    console.log('test get endpoint'); // this works but no response
     res.send('Welcome to the Noteful API!')
 });
 
